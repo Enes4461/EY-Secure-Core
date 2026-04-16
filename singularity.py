@@ -1,12 +1,14 @@
 """
-=============================================================================
-E&Y SECURE CORE - v48.0 ULTIMATE UNCOMPRESSED (THE LEVIATHAN)
+=========================================================================================
+E&Y SECURE CORE - v50.0 THE LEVIATHAN (FULL DEPLOYMENT)
 Authors: Enes & Yasin
 Description: Enterprise-Grade Cyber Operations Terminal & Multi-Device Sync.
-Features: 15-Grid Dashboard, OTA Auto-Updater, Live P2P Comms, Oracle-X AI, 
-          Dual-Core Database, Forensic Hex-Dumps, IP Blacklist, Diagnostics.
-Architecture: Uncompressed, Modular, Deep-Scan DB Repair.
-=============================================================================
+Features: 18-Grid Dashboard, OTA Auto-Updater (SSL Bypassed), Live P2P Comms, 
+          Oracle-X AI, Dual-Core Database, Forensic Hex-Dumps, IP Blacklist,
+          Advanced Port Scanner, Collatz Avalanche Crypto-Analysis, Omega Protocol.
+Architecture: Uncompressed, Modular, Deep-Scan DB Repair, Asymmetric Preparation.
+Lines of Code: 1000+ (Enterprise Standard)
+=========================================================================================
 """
 
 import os
@@ -16,9 +18,13 @@ import json
 import socket
 import random
 import hashlib
+import string
+import secrets
 import uuid
 import platform
 import urllib.request
+import urllib.error
+import ssl
 from datetime import datetime, timedelta
 
 # --- KRİPTOGRAFİ KÜTÜPHANELERİ (AES-256 GCM ve HKDF) ---
@@ -39,7 +45,7 @@ BACKUP_FILE = "ey_backup_vault.json"
 def get_strategic_intel(postal_code):
     """
     Girilen posta kodunu alarak askeri düzeyde lokasyon, savunma seviyesi ve koordinat üretir.
-    Trabzon (61) merkez üs olarak yapılandırılmıştır.
+    Trabzon (61) merkez üs olarak yapılandırılmıştır. Tüm veriler statik istihbarata dayanır.
     """
     intel_matrix = {
         "61": ("TRABZON", "KARADENİZ SİBER KARARGAH (MERKEZ ÜS)", "41.002°N, 39.716°E", "🔴 DEFCON-1", "ZONE-OMEGA"),
@@ -48,7 +54,8 @@ def get_strategic_intel(postal_code):
         "35": ("İZMİR", "EGE LOJİSTİK VE HABERLEŞME HATTI", "38.419°N, 27.128°E", "🟢 DEFCON-4", "ZONE-CHARLIE"),
         "07": ("ANTALYA", "GÜNEY RADAR VE SİNYAL İZLEME", "36.896°N, 30.713°E", "🟢 DEFCON-4", "ZONE-CHARLIE"),
         "41": ("KOCAELİ", "ENDÜSTRİYEL SİBER SAVUNMA HATTI", "40.765°N, 29.940°E", "🟡 DEFCON-3", "ZONE-BRAVO"),
-        "55": ("SAMSUN", "KUZEY VERİ AKTARIM DÜĞÜMÜ", "41.286°N, 36.336°E", "🟢 DEFCON-4", "ZONE-CHARLIE")
+        "55": ("SAMSUN", "KUZEY VERİ AKTARIM DÜĞÜMÜ", "41.286°N, 36.336°E", "🟢 DEFCON-4", "ZONE-CHARLIE"),
+        "01": ("ADANA", "GÜNEYDOĞU VERİ İSTASYONU", "37.000°N, 35.321°E", "🟡 DEFCON-3", "ZONE-DELTA")
     }
     prefix = str(postal_code)[:2]
     
@@ -61,17 +68,17 @@ def vault_blueprint():
     """
     Sistemin sıfır noktasıdır (Genesis). 
     Eğer veritabanı silinir veya bozulursa sistem kendini bu şablona göre yeniden inşa eder.
-    Tüm eklentiler ve yetkiler detaylı açıklamalarıyla buradadır.
+    Tüm eklentiler, yeni 18'li menü özellikleri ve yetkiler detaylı açıklamalarıyla buradadır.
     """
     return {
         "META": {
-            "sys_name": "E&Y ULTIMATE CORE", 
-            "sys_ver": "v48.0 UNCOMPRESSED", 
-            "news": "Ultimate Protokolü Aktif - Açık Mimari Devrede",
+            "sys_name": "E&Y LEVIATHAN CORE", 
+            "sys_ver": "v50.0 DEPLOYMENT", 
+            "news": "Leviathan Protokolü Aktif - Sistem Maksimum Kapasitede",
             "boot_time": datetime.now().isoformat(), 
             "total_ops": 0, 
             "failed_logins": 0,
-            "update_url": "AYARLANMADI" # OTA Update Raw Linki Buraya Gelecek
+            "update_url": "AYARLANMADI" 
         },
         "CONFIG": {
             "beta_key": "beta", 
@@ -83,8 +90,10 @@ def vault_blueprint():
             "oracle_ai": [True, "Oracle-X AI", "Yapılan işlemleri analiz eder, risk skoru ve taktik üretir."],
             "forensic": [True, "Adli Bilişim Köprüsü", "Mühürlü verilerin Hex-Dump seviyesinde analizini yapar."],
             "intel": [True, "İstihbarat Akışı", "Saha loglarını ve eylemleri saniyelik olarak tutar."],
-            "net_sim": [True, "Ağ Tarama Motoru", "Hedef IP/Domain analiz eder ve sahte ping atar."],
-            "sys_diag": [True, "Donanım Teşhis", "Sistemin çalıştığı makinenin CPU/RAM ve İşletim Sistemi bilgisini okur."],
+            "net_sim": [True, "Ağ Tarama Motoru", "Hedef IP/Domain analiz eder ve ping atar."],
+            "port_scan": [True, "Gelişmiş Port Tarayıcı", "Gerçek zamanlı TCP port analizi gerçekleştirir."],
+            "crypto_collatz": [True, "Collatz Kripto Analiz", "Asimetrik şifreleme için çığ etkisi simülasyonu."],
+            "sys_diag": [True, "Donanım Teşhis", "Sistemin çalıştığı makinenin CPU/RAM ve OS bilgisini okur."],
             "firewall": [True, "IP Karantina Sistemi", "Zararlı veya şüpheli IP adreslerini engeller."],
             "comms": [True, "Siber Haberleşme", "Uçtan uca şifreli, canlı senkronize Chat kanalı sağlar."],
             "ota_update": [True, "Sistem Güncelleyici", "Sistemi kapatmadan merkezden (GitHub) yeni kod çeker."]
@@ -93,10 +102,11 @@ def vault_blueprint():
             "s_ai": [True, "AI Yönetim Yetkisi", "Yapay zeka analiz motoruna erişim sağlar."],
             "s_for": [True, "Adli Arşiv (Root)", "Verilerin Hex dökümünü alma ve derin arşiv yetkisi."],
             "s_root": [True, "DB Kök Yönetimi", "Veritabanını tamamen temizleme ve imha etme yetkisi."],
-            "s_net": [True, "Ağ Operasyonları", "Dış IP adreslerine ping atma ve tarama yetkisi."],
+            "s_net": [True, "Ağ Operasyonları", "Dış IP adreslerine ping ve port tarama yetkisi."],
             "s_ban": [True, "Karantina Yetkisi", "Tespit edilen IP adreslerini kara listeye alma yetkisi."],
             "s_chat": [True, "Haberleşme İzni", "Global haberleşme (Chat) kanalına giriş yetkisi."],
-            "s_ota": [True, "Sistem Güncelleme", "Github veya buluttan kodu çekip üzerine yazma yetkisi."]
+            "s_ota": [True, "Sistem Güncelleme", "Github veya buluttan kodu çekip üzerine yazma yetkisi."],
+            "s_crypto": [True, "İleri Kripto Analizi", "Collatz ve asimetrik veri analiz modüllerine erişim."]
         },
         "B_PERMS": {
             "b_enc": [True, "Veri Mühürleme", "Ağa yeni şifreli veri (Kripto) yükleme yetkisi."],
@@ -107,7 +117,8 @@ def vault_blueprint():
             "b_g_arc": [False, "Sistem Arşivi", "Ağdaki tüm şifreli paketleri görme yetkisi (Kritik)."],
             "b_broad": [False, "Duyuru Yayınlama", "Sistem geneline flash haber ve duyuru yapma yetkisi."],
             "b_stats": [False, "Sistem Analitiği", "Veritabanı doluluk ve trafik oranlarını görme yetkisi."],
-            "b_diag": [False, "Sistem Teşhisi", "Bağlı olunan sunucunun donanım durumunu okuma yetkisi."]
+            "b_diag": [False, "Sistem Teşhisi", "Bağlı olunan sunucunun donanım durumunu okuma yetkisi."],
+            "b_pass": [True, "Parola Üretici", "Operasyonlar için kriptografik parola üretme yetkisi."]
         },
         "ARCHIVE": [], 
         "SUGGESTIONS": [], 
@@ -149,12 +160,10 @@ def db_load():
     # --- DERİN ONARIM MOTORU (DEEP REPAIR) ---
     ref = vault_blueprint()
     
-    # Ana klasörleri kontrol et
     for k in ref.keys():
         if k not in data: 
             data[k] = ref[k]
     
-    # Alt klasörleri (PLUGINS, PERMS vs.) tek tek tara ve eksikleri yerine koy
     for sub in ["PLUGINS", "S_PERMS", "B_PERMS"]:
         if sub in data:
             for sk, sv in ref[sub].items():
@@ -239,20 +248,31 @@ def simulate_loading(task_name, duration=1.0, steps=20):
 def boot_sequence():
     """
     Sistem ilk açıldığında gösterilen, modüllerin yüklendiği hissini veren
-    simüle edilmiş başlangıç (boot) sekansı.
+    simüle edilmiş başlangıç (boot) sekansı ve devasa ASCII sanatları.
     """
     cls()
-    print(f"{C_G}")
+    print(f"{C_C}")
+    print(r"  ███████╗  ██████╗  ██╗   ██╗")
+    print(r"  ██╔════╝ ██╔═══██╗ ╚██╗ ██╔╝")
+    print(r"  █████╗   ██║   ██║  ╚████╔╝ ")
+    print(r"  ██╔══╝   ██║▄▄ ██║   ╚██╔╝  ")
+    print(r"  ███████╗ ╚██████╔╝    ██║   ")
+    print(r"  ╚══════╝  ╚══▀▀═╝     ╚═╝   ")
+    print(f"{C_RESET}")
+    print(f" {C_BOLD}{C_P}--- THE LEVIATHAN CORE v50.0 INITIALIZATION ---{C_RESET}\n")
+    
     boot_msgs = [
         "INITIALIZING DEEP-SYNC DATABASE PROTOCOLS...",
         "LOADING ENCRYPTION MODULES (AES-256 GCM)...",
         "ESTABLISHING P2P COMMS NETWORK...",
-        "VERIFYING OTA UPDATE PROTOCOLS...",
+        "VERIFYING OTA UPDATE PROTOCOLS (SSL BYPASS)...",
         "ACTIVATING ORACLE-X AI ENGINE...",
+        "LOADING COLLATZ CRYPTO-ANALYSIS ENGINE...",
+        "MOUNTING FORENSIC HEX-DUMP UTILITIES...",
         "SYSTEM ONLINE AND FULLY OPERATIONAL."
     ]
     for msg in boot_msgs:
-        print(f"[*] {msg}")
+        print(f" {C_G}[*]{C_RESET} {msg}")
         time.sleep(0.2)
     print(f"{C_RESET}")
     time.sleep(0.5)
@@ -267,7 +287,7 @@ def draw_header(title, mode, db, ip, loc):
     color = C_P if mode == "ADMIN" else C_C
     w = 185
     
-    # Aktif kullanıcıları (Son 120 saniyede ping atanları) hesapla
+    # Aktif kullanıcıları hesapla
     active_nodes = db.get("ACTIVE_NODES", {})
     curr_time = time.time()
     online_count = sum(1 for t in active_nodes.values() if curr_time - t < 120)
@@ -277,7 +297,6 @@ def draw_header(title, mode, db, ip, loc):
     sys_id = f"⚡ {meta.get('sys_name')} | CORE: {meta.get('sys_ver')} | NODE: {ip} | TOPLAM OPS: {meta.get('total_ops')} ⚡"
     online_badge = f"🟢 AKTİF CİHAZ: {online_count}"
     
-    # Üst satırı dinamik olarak hesapla ve boşlukları doldur
     header_line = f"{color}║{C_RESET} {C_BOLD}{sys_id}{C_RESET}"
     header_line += " " * (w - len(sys_id) - len(online_badge) - 7)
     header_line += f"{C_G}{C_BOLD}{online_badge}{C_RESET} {color}║{C_RESET}"
@@ -285,16 +304,13 @@ def draw_header(title, mode, db, ip, loc):
     
     print(f"{color}╠" + "═" * (w-2) + f"╣{C_RESET}")
     
-    # Yayın / Broadcast alanı
     news = f"📢 SİSTEM BROADCAST: {meta.get('news')}"
     print(f"{color}║{C_RESET} {C_O}{C_BOLD}{news.center(w-4)}{C_RESET} {color}║{C_RESET}")
     print(f"{color}╠" + "═" * (w-2) + f"╣{C_RESET}")
     
-    # Modül / Sayfa Başlığı
     print(f"{color}║{C_RESET} {C_BOLD}{str(title).upper().center(w-4)}{C_RESET} {color}║{C_RESET}")
     print(f"{color}╠" + "═" * (w-2) + f"╣{C_RESET}")
     
-    # Alt Durum Çubuğu
     status = f"👤 RÜTBE: {mode} | 📍 ZONE: {loc[0]} | 🏢 HUB: {loc[1]} | 🛡️ {loc[3]} | 🕒 {datetime.now().strftime('%H:%M:%S')}"
     print(f"{color}║{C_RESET} {C_Y}{status.center(w-4)}{C_RESET} {color}║{C_RESET}")
     print(f"{color}╚" + "═" * (w-2) + f"╝{C_RESET}")
@@ -321,6 +337,8 @@ def oracle_ai(mode, db, action, extra_data=""):
         "login": f"Sistem erişimi mühürlendi (Risk Skoru: %{risk}). IP maskeleme savunması devrede.",
         "denied": f"KRİTİK İHLAL! Yetkisiz modül erişimi (Risk Skoru: %{risk}). Alarm durumuna geçildi.",
         "net": f"Ağ analizi tamamlandı (Risk Skoru: %{risk}). Hedef {extra_data} üzerinde güvenlik duvarı tespit edildi.",
+        "port": f"TCP Port taraması tamamlandı (Risk Skoru: %{risk}). Hedef sistemin zafiyetleri analiz edildi.",
+        "collatz": f"Asimetrik analiz tamamlandı. Collatz çığ etkisi (Avalanche) hesaplandı (Risk: %{risk}).",
         "diag": f"Sistem donanım teşhisi yapıldı. İşlemci ve RAM verilerinde sızıntı yok, her şey güvende.",
         "ban": f"Firewall güncellendi. {extra_data} IP adresi karantinaya alındı ve ağdan izole edildi.",
         "chat": f"Güvenli kanaldan veri iletildi (Risk Skoru: %0). Canlı P2P senkronizasyon Aktif.",
@@ -343,7 +361,7 @@ def get_crypto_key(tag, geo):
     kdf = HKDF(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=b"ultimate_uncompressed_v48",
+        salt=b"leviathan_full_deployment_v50",
         info=f"{tag}{geo}".encode()
     )
     return kdf.derive(b"master_nexus_secret_key")
@@ -376,7 +394,7 @@ def encryption_module(mode, db, ip, loc, geo_key):
         final_code = nonce.hex() + encryptor.tag.hex() + ciphertext.hex() + tag_hex + f"{len(tag_hex):02x}"
         uid = str(uuid.uuid4())[:8].upper()
         
-        db = db_load() # En güncel veritabanını al
+        db = db_load() 
         
         record = {
             "id": uid, 
@@ -450,7 +468,6 @@ def decryption_module(mode, db, ip, loc):
             "loc_tag": loc[0]
         })
         db_save(db)
-        
         oracle_ai(mode, db, "dec")
         
     except Exception: 
@@ -459,13 +476,107 @@ def decryption_module(mode, db, ip, loc):
         
     input("\n [ENTER] DEVAM ET...")
 
-# --- BÖLÜM 4: COMMS, FIREWALL, AĞ VE OTA (GÜNCELLEME) MODÜLLERİ ---
+# --- BÖLÜM 4: İLERİ SEVİYE KRİPTO VE MATEMATİKSEL ANALİZ ---
+
+def collatz_avalanche_analysis(mode, db, ip, loc):
+    """
+    Collatz dizilerindeki veri davranışını analiz ederek asimetrik bir şifreleme
+    algoritması için çığ etkisi (Avalanche Effect) simülasyonu yapar.
+    """
+    draw_header("Collatz Asimetrik Kripto Analizörü", mode, db, ip, loc)
+    print(f"\n {C_PK}--- ASİMETRİK ŞİFRELEME HAZIRLIK MODÜLÜ ---{C_RESET}")
+    print(f" {C_GR}Bu modül, Collatz varsayımı kullanılarak geliştirilecek asimetrik")
+    print(f" şifreleme projeleri için tohum (seed) analizi ve çığ etkisi ölçümü yapar.{C_RESET}")
+    
+    seed_str = input(f"\n {C_C}Analiz edilecek Tohum Değeri (Sayı) [X: Geri]:{C_RESET} ").strip()
+    if seed_str.upper() == "X": return
+    
+    if not seed_str.isdigit():
+        notify("Tohum değeri pozitif bir tam sayı olmalıdır.", "ERR")
+        return
+        
+    seed = int(seed_str)
+    if seed <= 0: return
+    
+    simulate_loading("COLLATZ DİZİSİ HESAPLANIYOR VE ÇIĞ ETKİSİ ÖLÇÜLÜYOR", duration=2.0)
+    
+    steps = 0
+    max_val = seed
+    current = seed
+    sequence = [current]
+    
+    while current != 1 and steps < 1000:
+        if current % 2 == 0:
+            current = current // 2
+        else:
+            current = 3 * current + 1
+        sequence.append(current)
+        if current > max_val:
+            max_val = current
+        steps += 1
+        
+    # Çığ etkisi simülasyonu (Avalanche Effect)
+    hash_val = hashlib.sha256(str(sequence).encode()).hexdigest()
+    
+    print(f"\n {C_Y}--- ANALİZ SONUÇLARI ---{C_RESET}")
+    print(f" {C_B}Başlangıç Tohumu:{C_RESET} {seed}")
+    print(f" {C_B}Toplam Adım Sayısı:{C_RESET} {steps}")
+    print(f" {C_B}Ulaşılan Tepe Değeri (Max):{C_RESET} {max_val}")
+    print(f" {C_B}Dizi Parçası:{C_RESET} {sequence[:10]} ... {sequence[-5:]}")
+    print(f" {C_B}Üretilen Kriptografik Karma (Hash):{C_RESET} {hash_val}")
+    
+    db = db_load()
+    db["INTEL_LOGS"].append({
+        "at": datetime.now().strftime("%H:%M:%S"), 
+        "user": mode, 
+        "act": f"COLLATZ ANALİZİ ({seed})", 
+        "ip": ip, 
+        "loc_tag": loc[0]
+    })
+    db_save(db)
+    
+    oracle_ai(mode, db, "collatz")
+    input("\n [ENTER] DEVAM ET...")
+
+def generate_secure_password(mode, db, ip, loc):
+    """Operasyonlar için kriptografik olarak güvenli, kırılamaz parola üretir."""
+    draw_header("Kriptografik Parola Üretici (Vault)", mode, db, ip, loc)
+    print(f"\n {C_PK}--- SİBER OPERASYON PAROLA MERKEZİ ---{C_RESET}")
+    
+    try:
+        length = int(input(f"\n {C_C}Parola Uzunluğu (Örn: 32) [0: Geri]:{C_RESET} "))
+        if length == 0: return
+        if length < 8 or length > 256:
+            notify("Uzunluk 8 ile 256 karakter arasında olmalıdır.", "ERR")
+            return
+            
+        simulate_loading("ENTROPİ HAVUZU OLUŞTURULUYOR", duration=1.0)
+        
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(secrets.choice(characters) for _ in range(length))
+        
+        print(f"\n {C_G}ÜRETİLEN GÜVENLİ PAROLA:{C_RESET}")
+        print(f" {C_BOLD}{C_Y}{password}{C_RESET}")
+        
+        db = db_load()
+        db["INTEL_LOGS"].append({
+            "at": datetime.now().strftime("%H:%M:%S"), 
+            "user": mode, 
+            "act": f"PAROLA ÜRETİLDİ ({length} char)", 
+            "ip": ip, 
+            "loc_tag": loc[0]
+        })
+        db_save(db)
+        
+    except ValueError:
+        notify("Lütfen geçerli bir sayı giriniz.", "ERR")
+        
+    input("\n [ENTER] DEVAM ET...")
+
+# --- BÖLÜM 5: COMMS, FIREWALL, AĞ, PORT VE OTA MODÜLLERİ ---
 
 def comms_module(mode, db_stale, ip, loc):
-    """
-    P2P Canlı Senkronize Haberleşme (Chat) Modülü.
-    Her enter tuşunda veritabanını yenileyerek diğer cihazlardan gelen mesajları çeker.
-    """
+    """P2P Canlı Senkronize Haberleşme (Chat) Modülü."""
     while True:
         db = db_load()
         update_active_status(ip)
@@ -481,7 +592,7 @@ def comms_module(mode, db_stale, ip, loc):
                 color = C_P if m['sender'] == "ADMIN" else C_C
                 print(f" {C_GR}[{m['at']}]{C_RESET} {color}{m['sender']}{C_RESET} ({m['loc']}): {m['msg']}")
         
-        print(f"\n {C_Y}>> Ekranı yenilemek ve mesajları çekmek için boş bırakıp ENTER'a basınız. | Çıkış: X{C_RESET}")
+        print(f"\n {C_Y}>> Ekranı yenilemek için boş bırakıp ENTER'a basınız. | Çıkış: X{C_RESET}")
         txt = input(f" {C_G}💬 MESAJ YAZ > {C_RESET}").strip()
         
         if txt.upper() == "X": 
@@ -508,8 +619,7 @@ def comms_module(mode, db_stale, ip, loc):
 def auto_update_system(mode, db, ip, loc):
     """
     OTA (Over-The-Air) Sistem Güncelleme Protokolü.
-    GitHub raw linkinden yeni kodu çeker, orijinalliğini doğrular ve eski dosyanın üzerine yazar.
-    Sistemi kapatıp yeniden başlatarak güncellemeyi tamamlar.
+    SSL Bypassed: SSL Sertifika hatasını aşarak kodu zorla çeker.
     """
     draw_header("OTA SİSTEM GÜNCELLEME MERKEZİ", mode, db, ip, loc)
     update_url = db["META"].get("update_url", "")
@@ -519,9 +629,9 @@ def auto_update_system(mode, db, ip, loc):
     print(f" {C_Y}DİKKAT:{C_RESET} Sistem, belirtilen hedef sunucudaki kod dizinini çekecek,")
     print(f"         kendi üzerine yazacak ve operasyonu yeniden başlatacaktır.")
     
-    if "raw.github" not in update_url and "http" not in update_url:
+    if "raw.githubusercontent.com" not in update_url and "http" not in update_url:
         print(f"\n {C_R}[!] KRİTİK HATA: Geçerli bir RAW bağlantı URL'si ayarlanmamış.{C_RESET}")
-        print(f" {C_GR}Sistemin güncellenebilmesi için Ayarlar (Seçenek 14) menüsünden{C_RESET}")
+        print(f" {C_GR}Sistemin güncellenebilmesi için Ayarlar menüsünden{C_RESET}")
         print(f" {C_GR}'update_url' parametresini GitHub Raw linkinizle değiştirmeniz gereklidir.{C_RESET}")
         input("\n [ENTER] GERİ DÖN")
         return
@@ -530,48 +640,53 @@ def auto_update_system(mode, db, ip, loc):
     
     if cmd == "EVET":
         try:
-            simulate_loading("GÜNCELLEME SUNUCUSUNA BAĞLANILIYOR", duration=1.5)
+            simulate_loading("SUNUCUYA BAĞLANILIYOR (SSL BYPASS AKTİF)", duration=1.5)
             oracle_ai(mode, db, "update")
             
-            # Güvenli HTTP İsteği
+            # --- SSL BYPASS (Sertifika Doğrulamasını Devre Dışı Bırakma) ---
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            
             req = urllib.request.Request(update_url, headers={'User-Agent': 'EY-Terminal-Updater'})
-            with urllib.request.urlopen(req, timeout=15) as response:
+            
+            # Context parametresi eklendi
+            with urllib.request.urlopen(req, context=ctx, timeout=15) as response:
                 new_code = response.read().decode('utf-8')
             
-            # Basit İmza Doğrulaması (Kötü niyetli kod çekilmesini engeller)
             if "E&Y SECURE CORE" in new_code:
-                simulate_loading("YENİ KOD İNDİRİLİYOR VE DOĞRULANIYOR", duration=2.0)
+                simulate_loading("YENİ KOD İNDİRİLİYOR VE YAZILIYOR", duration=2.0)
                 
-                # Mevcut çalıştırılan Python dosyasının yolunu bul ve üstüne yaz
                 current_file = sys.argv[0]
                 with open(current_file, 'w', encoding='utf-8') as f: 
                     f.write(new_code)
                 
                 print(f"\n {C_G}SİSTEM GÜNCELLEMESİ BAŞARILI! YENİDEN BAŞLATILIYOR...{C_RESET}")
                 
-                # Log kaydı ekle
                 db["INTEL_LOGS"].append({
                     "at": datetime.now().strftime("%H:%M:%S"), 
                     "user": mode, 
-                    "act": "OTA GÜNCELLEMESİ BAŞARIYLA YAPILDI", 
+                    "act": "OTA GÜNCELLEMESİ YAPILDI", 
                     "ip": ip, 
                     "loc_tag": loc[0]
                 })
                 db_save(db)
                 time.sleep(2)
                 
-                # Sistemi aynı Python ortamıyla kendini kapatıp açmaya zorla
                 os.execv(sys.executable, ['python'] + sys.argv)
             else: 
-                notify("İndirilen kaynakta güvenlik imzası (E&Y SECURE CORE) bulunamadı. İşlem iptal edildi.", "ERR")
+                notify("İndirilen kaynakta güvenlik imzası bulunamadı. İşlem iptal.", "ERR")
                 
+        except urllib.error.URLError as e:
+            print(f"\n {C_R}[!] BAĞLANTI HATASI: İnternet yok veya Sunucu reddetti.{C_RESET}")
+            print(f" {C_Y}Hata Detayı: {e.reason}{C_RESET}")
         except Exception as e: 
-            notify(f"Bağlantı veya Sunucu Hatası: {e}", "ERR")
+            print(f"\n {C_R}[!] BEKLENMEDİK HATA: {e}{C_RESET}")
             
     input("\n [ENTER] ANA MENÜYE DÖN")
 
 def firewall_module(mode, db, ip, loc):
-    """Adminler için şüpheli IP adreslerini ağdan kalıcı olarak banlama modülü."""
+    """Şüpheli IP adreslerini ağdan kalıcı olarak banlama modülü."""
     while True:
         db = db_load()
         draw_header("Siber Güvenlik Duvarı (Firewall)", mode, db, ip, loc)
@@ -605,10 +720,7 @@ def firewall_module(mode, db, ip, loc):
                 notify(f"{rem} üzerindeki engel kaldırıldı.", "INFO")
 
 def display_hex_dump(hex_string):
-    """
-    Adli Bilişim aracı: Gönderilen kripto veriyi 64 karakterlik bloklar ve
-    16'lık (Hex) bellek offset adresleri ile görsel bir döküme çevirir.
-    """
+    """Adli Bilişim aracı: Gönderilen veriyi Hex bellek dökümüne çevirir."""
     print(f"\n {C_GR}--- FORENSIC HEX DUMP (MEMORY EXTRACTION) ---{C_RESET}")
     lines = [hex_string[i:i+64] for i in range(0, len(hex_string), 64)]
     
@@ -619,11 +731,11 @@ def display_hex_dump(hex_string):
         
     print(f" {C_GR}--- END OF PHYSICAL MEMORY DUMP ---{C_RESET}\n")
 
-def network_simulation(mode, db, ip, loc):
-    """Adminler için ağ ping ve hedef yönlendirme simülasyonu."""
-    draw_header("Ağ İstihbaratı ve Hedef Tarama (Ping/Traceroute)", mode, db, ip, loc)
+def network_traceroute(mode, db, ip, loc):
+    """Ağ ping ve hedef yönlendirme simülasyonu."""
+    draw_header("Ağ İstihbaratı (Ping/Traceroute)", mode, db, ip, loc)
     
-    target = input(f"\n {C_C}🌐 Taranacak Hedef IP veya Domain (X: Geri):{C_RESET} ").strip()
+    target = input(f"\n {C_C}🌐 Hedef IP veya Domain (X: Geri):{C_RESET} ").strip()
     if target.upper() == "X": 
         return
         
@@ -642,13 +754,59 @@ def network_simulation(mode, db, ip, loc):
     db["INTEL_LOGS"].append({
         "at": datetime.now().strftime("%H:%M:%S"), 
         "user": mode, 
-        "act": f"AĞ TARAMA ({target})", 
+        "act": f"TRACEROUTE ({target})", 
         "ip": ip, 
         "loc_tag": loc[0]
     })
     db_save(db)
     
     oracle_ai(mode, db, "net", target)
+    input("\n [ENTER] DEVAM ET...")
+
+def advanced_port_scanner(mode, db, ip, loc):
+    """Gerçek zamanlı olarak basit bir TCP Port taraması gerçekleştirir."""
+    draw_header("Gelişmiş TCP Port Tarayıcı", mode, db, ip, loc)
+    
+    target = input(f"\n {C_C}🔍 Taranacak Hedef IP (X: Geri):{C_RESET} ").strip()
+    if target.upper() == "X": return
+    
+    common_ports = [21, 22, 25, 53, 80, 110, 443, 3306, 8080]
+    print(f"\n {C_GR}Hedef {target} üzerinde kritik portlar taranıyor...{C_RESET}")
+    
+    open_ports = []
+    
+    for port in common_ports:
+        sys.stdout.write(f"\r Port {port} test ediliyor...")
+        sys.stdout.flush()
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(0.3) # Hızlı tarama
+        try:
+            result = s.connect_ex((target, port))
+            if result == 0:
+                open_ports.append(port)
+        except:
+            pass
+        finally:
+            s.close()
+            
+    print("\n")
+    if not open_ports:
+        print(f" {C_Y}Sonuç: Hedefte standart açık port bulunamadı veya ICMP kapalı.{C_RESET}")
+    else:
+        print(f" {C_G}AÇIK PORTLAR TESPİT EDİLDİ:{C_RESET}")
+        for p in open_ports:
+            print(f" [+] Port {p} : AÇIK")
+            
+    db = db_load()
+    db["INTEL_LOGS"].append({
+        "at": datetime.now().strftime("%H:%M:%S"), 
+        "user": mode, 
+        "act": f"PORT SCAN ({target})", 
+        "ip": ip, 
+        "loc_tag": loc[0]
+    })
+    db_save(db)
+    oracle_ai(mode, db, "port", target)
     input("\n [ENTER] DEVAM ET...")
 
 def system_diagnostics(mode, db, ip, loc):
@@ -673,10 +831,42 @@ def system_diagnostics(mode, db, ip, loc):
     oracle_ai(mode, db, "diag")
     input("\n [ENTER] GERİ DÖN...")
 
-# --- BÖLÜM 6: ANA KONTROL DÖNGÜSÜ (15'Lİ MEGA GRID DASHBOARD) ---
+def the_omega_protocol():
+    """Görsel bir siber imha (Self-Destruct) sekansıdır."""
+    cls()
+    print(f"{C_R}{C_BOLD}")
+    print(r"  /$$$$$$  /$$      /$$ /$$$$$$$$ /$$$$$$   /$$$$$$ ")
+    print(r" /$$__  $$| $$$    /$$$| $$_____//$$__  $$ /$$__  $$")
+    print(r"| $$  \ $$| $$$$  /$$$$| $$     | $$  \__/| $$  \ $$")
+    print(r"| $$  | $$| $$ $$/$$ $$| $$$$$  | $$ /$$$$| $$$$$$$$")
+    print(r"| $$  | $$| $$  $$$| $$| $$__/  | $$|_  $$| $$__  $$")
+    print(r"| $$  | $$| $$\  $ | $$| $$     | $$  \ $$| $$  | $$")
+    print(r"|  $$$$$$/| $$ \/  | $$| $$$$$$$|  $$$$$$/| $$  | $$")
+    print(r" \______/ |__/     |__/|________/\______/ |__/  |__/")
+    print(f"{C_RESET}")
+    
+    print(f"\n {C_R}{C_BOLD}DİKKAT: OMEGA PROTOKOLÜ (SİSTEM İMHASI) TETİKLENDİ.{C_RESET}")
+    confirm = input(f" {C_Y}BU İŞLEM GERİ ALINAMAZ. ONAYLIYOR MUSUNUZ? (EVET/HAYIR): {C_RESET}").upper()
+    
+    if confirm == "EVET":
+        cls()
+        for i in range(10, 0, -1):
+            print(f"\n\n\n\n\n\n\n\n\n\n\n\n\n")
+            print(f"               {C_R}{C_BOLD}SİSTEM KENDİNİ İMHA EDİYOR: {i}{C_RESET}".center(100))
+            time.sleep(1)
+            cls()
+            
+        if os.path.exists(DB_FILE): os.remove(DB_FILE)
+        if os.path.exists(BACKUP_FILE): os.remove(BACKUP_FILE)
+        
+        print(f"\n\n {C_R}BÜTÜN VERİLER SİLİNDİ. SİSTEM KAPATILIYOR.{C_RESET}")
+        time.sleep(2)
+        sys.exit()
 
-def start_nexus():
-    """Programın başlangıç noktası ve ana döngüsü."""
+# --- BÖLÜM 6: ANA KONTROL DÖNGÜSÜ (18'Lİ MEGA GRID DASHBOARD) ---
+
+def start_leviathan():
+    """Programın başlangıç noktası ve devasa 18'li menü döngüsü."""
     boot_sequence() 
     
     while True:
@@ -692,16 +882,12 @@ def start_nexus():
         print(f" ╚" + "═" * (w_l-2) + "╝{C_RESET}")
         
         entry = input(f" {C_Y}🔑 GİRİŞ ANAHTARI (X: ÇIKIŞ YAP) > {C_RESET}").strip().lower()
-        if entry == "x": 
-            break
+        if entry == "x": break
             
-        # Panic Modu Kontrolü
+        # Gizli Panic Kodu
         if entry == conf.get("panic"): 
-            if os.path.exists(DB_FILE): os.remove(DB_FILE)
-            if os.path.exists(BACKUP_FILE): os.remove(BACKUP_FILE)
-            print(f"{C_R}[!] KRİTİK PROTOKOL: SİSTEM KENDİNİ İMHA ETTİ VE SİLİNDİ.{C_RESET}")
-            time.sleep(2)
-            sys.exit()
+            the_omega_protocol()
+            continue
             
         # Güvenlik Duvarı (Blacklist) Kontrolü
         if my_ip in db.get("BLACKLIST", []):
@@ -739,7 +925,7 @@ def start_nexus():
             update_active_status(my_ip)
             
             b_p, s_p, plug = db["B_PERMS"], db["S_PERMS"], db["PLUGINS"]
-            draw_header("NETWORK SYNC COMMAND CENTER", mode, db, my_ip, loc_info)
+            draw_header("LEVIATHAN COMMAND CENTER", mode, db, my_ip, loc_info)
             
             if mode == "BETA":
                 # --- BETA DYNAMIC DASHBOARD ---
@@ -762,6 +948,7 @@ def start_nexus():
                 if b_p.get("b_broad", [False])[0]: extras.append(f"{C_O}[7]{C_RESET} DUYURU YAYINLA")
                 if b_p.get("b_stats", [False])[0]: extras.append(f"{C_PK}[8]{C_RESET} DB DASHBOARD")
                 if b_p.get("b_diag", [False])[0]: extras.append(f"{C_C}[9]{C_RESET} SİSTEM TEŞHİSİ")
+                if b_p.get("b_pass", [False])[0]: extras.append(f"{C_P}[10]{C_RESET} PAROLA ÜRETİCİ")
                 
                 if extras: 
                     print(f"\n " + "  ".join(extras))
@@ -769,16 +956,17 @@ def start_nexus():
                 print(f"\n {C_R}[X] TERMİNALİ KAPAT VE GÜVENLİ ŞEKİLDE ÇIKIŞ YAP{C_RESET}")
                 
             else:
-                # --- 15'Lİ MEGA GRID DASHBOARD (ADMIN + OTA UPDATE) ---
-                print(f"  {C_P}⚡ OPERASYONEL & ADLİ İŞLEMLER{C_RESET}".ljust(65) + f"{C_PK}📡 İLETİŞİM & İSTİHBARAT AĞI{C_RESET}".ljust(65) + f"{C_B}⚙️ YÖNETİM & SİSTEM KONTROLÜ{C_RESET}")
+                # --- 18'Lİ MEGA GRID DASHBOARD (ADMIN + ALL PLUGINS) ---
+                print(f"  {C_P}⚡ KRİPTOGRAFİ & ADLİ İŞLEMLER{C_RESET}".ljust(65) + f"{C_PK}📡 AĞ, İLETİŞİM & İSTİHBARAT{C_RESET}".ljust(65) + f"{C_B}⚙️ YÖNETİM & SİSTEM KONTROLÜ{C_RESET}")
                 print(f"  {'─'*35}".ljust(65) + f"{'─'*35}".ljust(65) + f"{'─'*45}")
-                print(f"  {C_G}[1]{C_RESET} Veri Mühürleme İstasyonu".ljust(65) + f"{C_PK}[6]{C_RESET} Rapor / Vaka Denetimi Merkezi".ljust(65) + f"{C_B}[11]{C_RESET} Yetki ve İzin Matrisi")
-                print(f"  {C_G}[2]{C_RESET} Veri Çözümleme İstasyonu".ljust(65) + f"{C_O}[7]{C_RESET} Duyuru Yayın İstasyonu".ljust(65) + f"{C_B}[12]{C_RESET} Veritabanı Analitik Paneli")
-                print(f"  {C_Y}[3]{C_RESET} Adli Arşiv (Hex Dump)".ljust(65) + f"{C_R}[8]{C_RESET} IP Güvenlik Duvarı (Ban)".ljust(65) + f"{C_B}[13]{C_RESET} Sistem Donanım Teşhisi (Diag)")
-                print(f"  {C_C}[4]{C_RESET} Ağ Tarama ve Ping (Sim)".ljust(65) + f"{C_PK}[9]{C_RESET} İstihbarat Akışı (Saha Logs)".ljust(65) + f"{C_B}[14]{C_RESET} Çekirdek Ayarları (Update Linki)")
-                print(f"  {C_G}[5]{C_RESET} SİBER HABERLEŞME KANALI".ljust(65) + f"{C_O}[10]{C_RESET} Eklenti Yönetimi (Plugins)".ljust(65) + f"{C_R}[15]{C_RESET} {C_BOLD}OTA SİSTEM GÜNCELLEME{C_RESET}")
+                print(f"  {C_G}[1]{C_RESET} Veri Mühürleme İstasyonu".ljust(65) + f"{C_PK}[7]{C_RESET} Rapor / Vaka Denetimi".ljust(65) + f"{C_B}[13]{C_RESET} Veritabanı Analitik Paneli")
+                print(f"  {C_G}[2]{C_RESET} Veri Çözümleme İstasyonu".ljust(65) + f"{C_O}[8]{C_RESET} Duyuru Yayın İstasyonu".ljust(65) + f"{C_B}[14]{C_RESET} Sistem Donanım Teşhisi (Diag)")
+                print(f"  {C_Y}[3]{C_RESET} Adli Arşiv (Hex Dump)".ljust(65) + f"{C_R}[9]{C_RESET} IP Güvenlik Duvarı (Ban)".ljust(65) + f"{C_B}[15]{C_RESET} Yetki ve İzin Matrisi")
+                print(f"  {C_P}[4]{C_RESET} Collatz Kripto Analizi".ljust(65) + f"{C_PK}[10]{C_RESET} İstihbarat Akışı (Logs)".ljust(65) + f"{C_O}[16]{C_RESET} Eklenti Yönetimi (Plugins)")
+                print(f"  {C_G}[5]{C_RESET} SİBER HABERLEŞME KANALI".ljust(65) + f"{C_C}[11]{C_RESET} Ağ Tarama (Traceroute)".ljust(65) + f"{C_B}[17]{C_RESET} Çekirdek Ayarları (Update Linki)")
+                print(f"  {C_Y}[6]{C_RESET} Güvenli Parola Üretici".ljust(65) + f"{C_C}[12]{C_RESET} Gelişmiş Port Tarayıcı".ljust(65) + f"{C_R}[18]{C_RESET} {C_BOLD}OTA SİSTEM GÜNCELLEME{C_RESET}")
                 print(f"  {'─'*180}")
-                print(f"  {C_R}[X] SİSTEMİ KAPAT VE KİLİTLE{C_RESET}")
+                print(f"  {C_R}[00] OMEGA PROTOKOLÜ (SİSTEMİ İMHA ET){C_RESET}".ljust(130) + f"{C_R}[X] TERMİNALİ KİLİTLE{C_RESET}")
             
             sel = input(f"\n {C_BOLD}[EMİR GİRİN] > {C_RESET}").strip().upper()
             
@@ -786,6 +974,9 @@ def start_nexus():
             
             if sel == "X": 
                 break
+            
+            elif sel == "00" and mode == "ADMIN":
+                the_omega_protocol()
                 
             elif sel == "1": 
                 if mode == "ADMIN" or b_p["b_enc"][0]: 
@@ -800,7 +991,6 @@ def start_nexus():
                     notify("Deşifreleme yetkiniz kısıtlanmıştır.", "ERR")
             
             elif sel == "3": 
-                # ADLİ ARŞİV
                 page = 0
                 while True:
                     db = db_load() 
@@ -837,7 +1027,6 @@ def start_nexus():
                     elif cmd == "P" and page > 0: 
                         page -= 1
                     else:
-                        # Adli Kripto Hex Dump İncelemesi
                         if mode == "ADMIN" and plug["forensic"][0]:
                             found = next((x for x in target if x.get("id") == cmd), None)
                             if found:
@@ -848,30 +1037,33 @@ def start_nexus():
                                 input("[ENTER] GERİ DÖN")
 
             elif sel == "4": 
-                if mode == "ADMIN": 
-                    network_simulation(mode, db, my_ip, loc_info)
-                elif mode == "BETA":
-                    if b_p["b_sug"][0]:
-                        t = input("\n 📩 GÖNDERİLECEK VAKA/RAPOR İÇERİĞİ: ")
-                        if t: 
-                            db = db_load()
-                            uid = str(uuid.uuid4())[:6].upper()
-                            db["SUGGESTIONS"].append({
-                                "id": uid, "at": datetime.now().strftime("%H:%M"), 
-                                "msg": t, "ip": my_ip, "read": False, "loc": loc_info[0]
-                            })
-                            db_save(db)
-                            notify(f"Vaka (ID: {uid}) başarıyla karargaha iletildi.")
+                if mode == "ADMIN":
+                    if s_p.get("s_crypto", [False])[0]:
+                        collatz_avalanche_analysis(mode, db, my_ip, loc_info)
+                    else: notify("Kripto analiz yetkiniz kapalı.", "ERR")
+                elif mode == "BETA" and b_p["b_sug"][0]:
+                    t = input("\n 📩 GÖNDERİLECEK VAKA/RAPOR İÇERİĞİ: ")
+                    if t: 
+                        db = db_load()
+                        uid = str(uuid.uuid4())[:6].upper()
+                        db["SUGGESTIONS"].append({
+                            "id": uid, "at": datetime.now().strftime("%H:%M"), 
+                            "msg": t, "ip": my_ip, "read": False, "loc": loc_info[0]
+                        })
+                        db_save(db)
+                        notify(f"Vaka (ID: {uid}) başarıyla karargaha iletildi.")
             
             elif sel == "5":
-                # SİBER HABERLEŞME
-                if mode == "ADMIN": 
-                    comms_module(mode, db, my_ip, loc_info)
-                elif mode == "BETA" and b_p.get("b_chat", [False])[0]: 
+                if mode == "ADMIN" or (mode == "BETA" and b_p.get("b_chat", [False])[0]): 
                     comms_module(mode, db, my_ip, loc_info)
 
             elif sel == "6": 
-                # RAPOR DENETİMİ VEYA DUYURU
+                if mode == "ADMIN":
+                    generate_secure_password(mode, db, my_ip, loc_info)
+                elif mode == "BETA" and b_p.get("b_g_arc", [False])[0]: 
+                    notify("Sistem Arşivi erişimi Seçenek 3 üzerinden filtrelenmektedir.", "INFO")
+
+            elif sel == "7": 
                 if mode == "ADMIN":
                     while True:
                         db = db_load()
@@ -898,16 +1090,6 @@ def start_nexus():
                             print(f" GÖNDEREN: {r['ip']} | ZAMAN: {r['at']} | KONUM: {r['loc']}\n" + "═"*130)
                             print(f"\n {C_BOLD}{r['msg']}{C_RESET}\n\n" + "═"*130)
                             input("[ENTER] GERİ DÖN")
-                            
-                elif mode == "BETA" and b_p.get("b_g_arc", [False])[0]: 
-                    notify("Sistem Arşivi erişimi Seçenek 3 üzerinden filtrelenmektedir.", "INFO")
-
-            elif sel == "7": 
-                if mode == "ADMIN":
-                    db = db_load()
-                    db["META"]["news"] = input("\n 📢 SİSTEM GENELİ YENİ DUYURU: ")
-                    db_save(db)
-                    notify("Broadcast başarıyla yayına alındı.")
                 elif mode == "BETA" and b_p.get("b_broad", [False])[0]:
                     db = db_load()
                     db["META"]["news"] = input("\n 📢 SİSTEM GENELİ YENİ DUYURU: ")
@@ -915,8 +1097,11 @@ def start_nexus():
                     notify("Broadcast başarıyla yayına alındı.")
 
             elif sel == "8": 
-                if mode == "ADMIN": 
-                    firewall_module(mode, db, my_ip, loc_info)
+                if mode == "ADMIN":
+                    db = db_load()
+                    db["META"]["news"] = input("\n 📢 SİSTEM GENELİ YENİ DUYURU: ")
+                    db_save(db)
+                    notify("Broadcast başarıyla yayına alındı.")
                 elif mode == "BETA" and b_p.get("b_stats", [False])[0]:
                     draw_header("VERİTABANI ANALİTİK DASHBOARD", mode, db, my_ip, loc_info)
                     print(f" 📊 TRAFİK AKIŞI  : {len(db['INTEL_LOGS'])} Eylem")
@@ -925,7 +1110,12 @@ def start_nexus():
                     input("\n [ENTER] GERİ DÖN")
 
             elif sel == "9": 
-                # İSTİHBARAT AKIŞI
+                if mode == "ADMIN": 
+                    firewall_module(mode, db, my_ip, loc_info)
+                elif mode == "BETA" and b_p.get("b_diag", [False])[0]: 
+                    system_diagnostics(mode, db, my_ip, loc_info)
+
+            elif sel == "10": 
                 if mode == "ADMIN":
                     page_i = 0
                     while True:
@@ -943,26 +1133,37 @@ def start_nexus():
                         if nav_i == "X": break
                         elif nav_i == "N" and e_i < len(logs): page_i += 1
                         elif nav_i == "P" and page_i > 0: page_i -= 1
-                elif mode == "BETA" and b_p.get("b_diag", [False])[0]: 
-                    system_diagnostics(mode, db, my_ip, loc_info)
-
-            elif sel == "10" and mode == "ADMIN": 
-                # EKLENTİ YÖNETİMİ
-                while True:
-                    db = db_load()
-                    draw_header("EKLENTİ (PLUGINS) YÖNETİMİ", mode, db, my_ip, loc_info)
-                    for i, (k, v) in enumerate(db["PLUGINS"].items(), 1):
-                        print(f"  [{i}] {v[1]:<25} : [{'AKTİF' if v[0] else 'PASİF'}]")
-                        print(f"      └─> {C_GR}{v[2]}{C_RESET}")
-                    c = input("\n Değiştirmek için No girin | X Geri: ").upper()
-                    if c == "X": break
-                    if c.isdigit() and int(c) <= len(db["PLUGINS"]):
-                        key = list(db["PLUGINS"].keys())[int(c)-1]
-                        db["PLUGINS"][key][0] = not db["PLUGINS"][key][0]
-                        db_save(db)
+                elif mode == "BETA" and b_p.get("b_pass", [False])[0]:
+                    generate_secure_password(mode, db, my_ip, loc_info)
 
             elif sel == "11" and mode == "ADMIN": 
-                # YETKİ MATRİSİ
+                network_traceroute(mode, db, my_ip, loc_info)
+
+            elif sel == "12" and mode == "ADMIN": 
+                if plug.get("port_scan", [False])[0]:
+                    advanced_port_scanner(mode, db, my_ip, loc_info)
+                else:
+                    notify("Port tarama eklentisi devre dışı.", "ERR")
+
+            elif sel == "13" and mode == "ADMIN": 
+                db = db_load()
+                draw_header("VERİTABANI ANALİTİK DASHBOARD", mode, db, my_ip, loc_info)
+                print(f" 📊 TOPLAM İŞLEM TRAFİĞİ  : {len(db['INTEL_LOGS'])} Kayıt")
+                print(f" 📂 ŞİFRELENMİŞ ARŞİV HACMİ : {len(db['ARCHIVE'])} Mühür")
+                print(f" 📩 BEKLEYEN VAKA RAPORLARI : {len(db['SUGGESTIONS'])} Adet")
+                print(f" 💬 SİBER HABERLEŞME (COMMS): {len(db['COMMS'])} İleti")
+                
+                if input("\n VERİTABANINI SIFIRLA (SIFIRLA): ").upper() == "SIFIRLA":
+                    db["ARCHIVE"], db["INTEL_LOGS"], db["SUGGESTIONS"], db["COMMS"] = [], [], [], []
+                    db_save(db)
+                    notify("Veritabanı başarıyla temizlendi.")
+                else: 
+                    input("\n [ENTER] GERİ DÖN")
+
+            elif sel == "14" and mode == "ADMIN": 
+                system_diagnostics(mode, db, my_ip, loc_info)
+
+            elif sel == "15" and mode == "ADMIN": 
                 while True:
                     db = db_load()
                     draw_header("YETKİ VE İZİN HİYERARŞİSİ", mode, db, my_ip, loc_info)
@@ -983,27 +1184,21 @@ def start_nexus():
                             t_map[key][0] = not t_map[key][0]
                             db_save(db)
 
-            elif sel == "12" and mode == "ADMIN": 
-                # DB ANALİTİK
-                db = db_load()
-                draw_header("VERİTABANI ANALİTİK DASHBOARD", mode, db, my_ip, loc_info)
-                print(f" 📊 TOPLAM İŞLEM TRAFİĞİ  : {len(db['INTEL_LOGS'])} Kayıt")
-                print(f" 📂 ŞİFRELENMİŞ ARŞİV HACMİ : {len(db['ARCHIVE'])} Mühür")
-                print(f" 📩 BEKLEYEN VAKA RAPORLARI : {len(db['SUGGESTIONS'])} Adet")
-                print(f" 💬 SİBER HABERLEŞME (COMMS): {len(db['COMMS'])} İleti")
-                
-                if input("\n VERİTABANINI SIFIRLA (SIFIRLA): ").upper() == "SIFIRLA":
-                    db["ARCHIVE"], db["INTEL_LOGS"], db["SUGGESTIONS"], db["COMMS"] = [], [], [], []
-                    db_save(db)
-                    notify("Veritabanı başarıyla temizlendi.")
-                else: 
-                    input("\n [ENTER] GERİ DÖN")
-
-            elif sel == "13" and mode == "ADMIN": 
-                system_diagnostics(mode, db, my_ip, loc_info)
-            
-            elif sel == "14" and mode == "ADMIN": 
-                # ÇEKİRDEK AYARLARI (OTA LİNKİ BURADA)
+            elif sel == "16" and mode == "ADMIN": 
+                while True:
+                    db = db_load()
+                    draw_header("EKLENTİ (PLUGINS) YÖNETİMİ", mode, db, my_ip, loc_info)
+                    for i, (k, v) in enumerate(db["PLUGINS"].items(), 1):
+                        print(f"  [{i}] {v[1]:<25} : [{'AKTİF' if v[0] else 'PASİF'}]")
+                        print(f"      └─> {C_GR}{v[2]}{C_RESET}")
+                    c = input("\n Değiştirmek için No girin | X Geri: ").upper()
+                    if c == "X": break
+                    if c.isdigit() and int(c) <= len(db["PLUGINS"]):
+                        key = list(db["PLUGINS"].keys())[int(c)-1]
+                        db["PLUGINS"][key][0] = not db["PLUGINS"][key][0]
+                        db_save(db)
+                        
+            elif sel == "17" and mode == "ADMIN": 
                 if input(" 🔐 ADMIN AUTH ŞİFRESİ: ") == conf["auth_pass"]:
                     while True:
                         db = db_load()
@@ -1032,8 +1227,7 @@ def start_nexus():
                             notify("Ayar başarıyla mühürlendi.")
                             oracle_ai(mode, db, "settings")
                             
-            elif sel == "15" and mode == "ADMIN": 
-                # OTA GÜNCELLEME TETİKLEYİCİ
+            elif sel == "18" and mode == "ADMIN": 
                 if s_p.get("s_ota", [False])[0]: 
                     auto_update_system(mode, db, my_ip, loc_info)
                 else: 
@@ -1041,6 +1235,6 @@ def start_nexus():
 
 if __name__ == "__main__":
     try: 
-        start_nexus()
+        start_leviathan()
     except KeyboardInterrupt: 
         sys.exit()
